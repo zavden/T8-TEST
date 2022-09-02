@@ -9,6 +9,7 @@ html
         block pug_styles
         link(rel="stylesheet" href="../prism/prism.css")
         link(rel="icon" href="../favicon.ico")
+        script(src="../static/hl.js")
     body
         .contenido
             h1#titulo=`${titulo}`
@@ -24,7 +25,6 @@ html
             .menu-nav#downer
                 a(href="../index.html")=`Index`
                 +menu_nav(...lista_ejercicios)
-        script(src="../static/hl.js")
         block html_javascript
         include /modules/pug/static/js_static
         script(src="../prism/prism.js")
