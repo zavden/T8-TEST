@@ -208,3 +208,18 @@ mixin code_emb_js(name,padding="300px")
         for(let _i=0; _i<all_codes.length; _i++){
             replace_all_codes(all_codes[_i], "script.js")
         }
+
+mixin code_emb_source(name, padding="300px", padding_code="400px")
+    - code_count += 1
+    .ejercicio
+        a(href=`../ejemplos/${name}/index.html` target="_blank").ejercicio-html=`Ejercicio - ${name.slice(3)}`
+    .embed-container(style=`padding-bottom: ${padding};`).html-resize
+        iframe.html-resize(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen)
+    .tab-content
+        +tab_info(code_count, "HTML-S", "CSS-S", "JS-S")
+        .tabcontent(id=`HTML-S-${code_count}`)
+            +code_emb_html(name, padding=padding_code)
+        .tabcontent(id=`CSS-S-${code_count}`)
+            +code_emb_css(name, padding=padding_code)
+        .tabcontent(id=`JS-S-${code_count}`)
+            +code_emb_js(name, padding=padding_code)

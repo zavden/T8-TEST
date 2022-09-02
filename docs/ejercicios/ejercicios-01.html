@@ -29,7 +29,7 @@
   <body>
     <div class="contenido">
       <h1 id="titulo">Ejemplo 1</h1>
-      <div class="menu-nav"><a href="../index.html">Index</a><a class="remark-ej" href="ejercicios-01.html">Ej-01</a>
+      <div class="menu-nav"><a href="../index.html">Index</a><a class="remark-ej" href="ejercicios-01.html">Ej-01</a><a href="ejercicios-02.html">Ej-02</a>
       </div><code class="header" style="text-align:center; display:block"><a href="#downer"></a></code>
       <pre id="ej-01-html"><code class="html-resize embed-container language-html hljs code-emb" style="padding-bottom: 300px;">ej-01</code></pre>
       <script>all_codes = document.querySelectorAll('#ej-01-html .language-html')</script>
@@ -53,7 +53,90 @@
         for(let _i=0; _i<all_codes.length; _i++){
             replace_all_codes(all_codes[_i], "script.js")
         }
-      </script><img src="../static/e1-1.png" style="width: 100%"/><p><img src="../static/e1-1.png" alt=""></p>
+        
+      </script><br>
+      <div class="ejercicio"><a class="ejercicio-html" href="../ejemplos/ej-02/index.html" target="_blank">Ejercicio - 02</a></div>
+      <div class="embed-container html-resize" style="padding-bottom: 300px;">
+        <iframe class="html-resize" src="../ejemplos/ej-02/" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+      </div>
+      <div class="tab-content">
+        <div class="tab">
+          <button class="tablinks" onclick="openTAB(event, &quot;HTML-S-1&quot;)">HTML-S</button>
+          <button class="tablinks" onclick="openTAB(event, &quot;CSS-S-1&quot;)">CSS-S</button>
+          <button class="tablinks" onclick="openTAB(event, &quot;JS-S-1&quot;)">JS-S</button>
+        </div>
+        <div class="tabcontent" id="HTML-S-1">
+          <pre id="ej-02-html"><code class="html-resize embed-container language-html hljs code-emb" style="padding-bottom: 400px;">ej-02</code></pre>
+          <script>all_codes = document.querySelectorAll('#ej-02-html .language-html')</script>
+          <script>
+            for(let _i=0; _i<all_codes.length; _i++){
+                replace_all_codes(all_codes[_i], "index.html")
+            }
+            
+          </script>
+        </div>
+        <div class="tabcontent" id="CSS-S-1">
+          <pre id="ej-02-css"><code class="html-resize embed-container language-css hljs code-emb" style="padding-bottom: 400px;">ej-02</code></pre>
+          <script>all_codes = document.querySelectorAll('#ej-02-css .language-css')</script>
+          <script>
+            for(let _i=0; _i<all_codes.length; _i++){
+                replace_all_codes(all_codes[_i], "styles.css")
+            }
+            
+          </script>
+        </div>
+        <div class="tabcontent" id="JS-S-1">
+          <pre id="ej-02-javascript"><code class="html-resize embed-container language-javascript hljs code-emb" style="padding-bottom: 400px;">ej-02</code></pre>
+          <script>all_codes = document.querySelectorAll('#ej-02-javascript .language-javascript')</script>
+          <script>
+            for(let _i=0; _i<all_codes.length; _i++){
+                replace_all_codes(all_codes[_i], "script.js")
+            }
+            
+          </script>
+        </div>
+      </div>
+      <div class="ejercicio"><a class="ejercicio-html" href="../ejemplos/ej-01/index.html" target="_blank">Ejercicio - 01</a></div>
+      <div class="embed-container html-resize" style="padding-bottom: 300px;">
+        <iframe class="html-resize" src="../ejemplos/ej-01/" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+      </div>
+      <div class="tab-content">
+        <div class="tab">
+          <button class="tablinks" onclick="openTAB(event, &quot;HTML-S-2&quot;)">HTML-S</button>
+          <button class="tablinks" onclick="openTAB(event, &quot;CSS-S-2&quot;)">CSS-S</button>
+          <button class="tablinks" onclick="openTAB(event, &quot;JS-S-2&quot;)">JS-S</button>
+        </div>
+        <div class="tabcontent" id="HTML-S-2">
+          <pre id="ej-01-html"><code class="html-resize embed-container language-html hljs code-emb" style="padding-bottom: 400px;">ej-01</code></pre>
+          <script>all_codes = document.querySelectorAll('#ej-01-html .language-html')</script>
+          <script>
+            for(let _i=0; _i<all_codes.length; _i++){
+                replace_all_codes(all_codes[_i], "index.html")
+            }
+            
+          </script>
+        </div>
+        <div class="tabcontent" id="CSS-S-2">
+          <pre id="ej-01-css"><code class="html-resize embed-container language-css hljs code-emb" style="padding-bottom: 400px;">ej-01</code></pre>
+          <script>all_codes = document.querySelectorAll('#ej-01-css .language-css')</script>
+          <script>
+            for(let _i=0; _i<all_codes.length; _i++){
+                replace_all_codes(all_codes[_i], "styles.css")
+            }
+            
+          </script>
+        </div>
+        <div class="tabcontent" id="JS-S-2">
+          <pre id="ej-01-javascript"><code class="html-resize embed-container language-javascript hljs code-emb" style="padding-bottom: 400px;">ej-01</code></pre>
+          <script>all_codes = document.querySelectorAll('#ej-01-javascript .language-javascript')</script>
+          <script>
+            for(let _i=0; _i<all_codes.length; _i++){
+                replace_all_codes(all_codes[_i], "script.js")
+            }
+            
+          </script>
+        </div>
+      </div><img src="../static/e1-1.png" style="width: 100%"/><p><img src="../static/e1-1.png" alt=""></p>
 
       <pre><code class="txt-diagram">                   ┌─────────────┐                    
                    │ Block - >2  │                    
@@ -190,7 +273,7 @@ p.style.fontSize = &quot;2em&quot;;
       </div>
       <div class="tabcontent" id="CSS-02">
         <pre><code class="hljs"><span class="hljs-selector-class">.title</span> {
-    <span class="hljs-attribute">color</span>: red;
+    <span class="hljs-attribute">color</span>: orange;
     <span class="hljs-attribute">font-size</span>: <span class="hljs-number">2em</span>;
 }
 
@@ -199,13 +282,13 @@ p.style.fontSize = &quot;2em&quot;;
       <div class="tabcontent" id="JS-02">
         <pre><code class="hljs">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
     <span class="hljs-keyword">const</span> subtitle = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"subtitle"</span>)
-    subtitle.style.color= <span class="hljs-string">"pink"</span>
+    subtitle.style.color= <span class="hljs-string">"teal"</span>
 })()
 
 </code></pre>
       </div>
       <hr><code class="header" style="text-align:center; display:block"><a href="#titulo"></a></code>
-      <div class="menu-nav" id="downer"><a href="../index.html">Index</a><a class="remark-ej" href="ejercicios-01.html">Ej-01</a>
+      <div class="menu-nav" id="downer"><a href="../index.html">Index</a><a class="remark-ej" href="ejercicios-01.html">Ej-01</a><a href="ejercicios-02.html">Ej-02</a>
       </div>
     </div>
     <script src="../scripts.js"></script>
