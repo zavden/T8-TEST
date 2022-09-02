@@ -13,23 +13,33 @@ block pug_styles
 block html_javascript
     +new_script(`../scripts.js`)
 block pug_contenido
+    +code_emb_source("ej-01")
+    +code_emb_source("ej-02")
+    +code_emb_source("ej-03")
+    hr
+    +code_emb_source("ej-01")
+    +code_emb_source("ej-02")
+    +code_emb_source("ej-03")
+    hr
+    +codepen_flex_all("BaybRKr",1)
+    +codepen_flex_all("vYEPxPX",1)
+    hr
+    hr
     +code_emb_html("ej-01")
     +code_emb_css("ej-01")
     +code_emb_js("ej-01")
     br
-    //- +code_html("02", "HTML", "CSS", "JS")
-    //- .tabcontent#HTML-02
-    //-     +code_emb_html("ej-02")
-    //- .tabcontent#CSS-02
-    //-     +code_emb_css("ej-02")
-    //- .tabcontent#JS-02
-    //-     +code_emb_js("ej-02")
-    +code_emb_source("ej-02")
-    +code_emb_source("ej-01")
+    +code_html("02", "HTML", "CSS", "JS")
+    .tabcontent#HTML-02
+        +code_emb_html("ej-02")
+    .tabcontent#CSS-02
+        +code_emb_css("ej-02")
+    .tabcontent#JS-02
+        +code_emb_js("ej-02")
     +img_e("e1-1.png")
     :markdown-it
         ![](../static/e1-1.png)
-    pre: code.txt-diagram: include ../static/txt-diagrams/diag1.txt
+    //- pre: code.txt-diagram: include ../static/txt-diagrams/diag1.txt
     +code_html("01", "HTML", "CSS", "JS")
     .tabcontent#HTML-01: :markdown-it(html)
             ```html
@@ -75,12 +85,11 @@ block pug_contenido
                 ```
     hr
     hr
-    +code_html("02", "HTML", "CSS", "JS")
-    .tabcontent#HTML-02: pre: code.hljs: :highlight(lang="html")
+    +code_html("03", "HTML", "CSS", "JS")
+    .tabcontent#HTML-03: pre: code.hljs: :highlight(lang="html")
         <p>Hello world - 3</p>
-    .tabcontent#CSS-02
-        pre: code.hljs: include:highlight(lang="scss") ../ejemplos/ej-02/styles.scss
-    .tabcontent#JS-02
-        pre: code.hljs: include:highlight(lang="typescript") ../ejemplos/ej-02/script.ts
-
+    .tabcontent#CSS-03
+        pre: code.hljs: include:highlight(lang="scss") ../ejemplos/ej-03/styles.scss
+    .tabcontent#JS-03
+        pre: code.hljs: include:highlight(lang="typescript") ../ejemplos/ej-03/script.ts
 

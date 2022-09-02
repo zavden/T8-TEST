@@ -1,5 +1,5 @@
 (function() {
-    let subtitle = document.getElementById("subtitle")
-    subtitle.style.color= "blue"
+    const subtitle = document.getElementById("subtitle")
+    subtitle.style.color= "pink"
 })()
 

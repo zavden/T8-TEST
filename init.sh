@@ -31,18 +31,45 @@ echo '-
 echo 'extends /modules/pug/blocks/ejercicios
 block pug_javascript
     -
-        let titulo = "Ejemplo 1",
+        let titulo = "Ejemplo NL",
             formato = ""
         let codepen_list = [
             "vYEPxPX",
             "BaybRKr",
         ]
-        nej = 1 // <== EXERCISE NUMBER - REPLACE IT
+        nej = NL // <== EXERCISE NUMBER - REPLACE IT
 block pug_styles
     +new_style(`../styles.css`)
 block html_javascript
     +new_script(`../scripts.js`)
 block pug_contenido
+    +code_emb_source("ej-01")
+    +code_emb_source("ej-02")
+    +code_emb_source("ej-03")
+    hr
+    +code_emb_source("ej-01")
+    +code_emb_source("ej-02")
+    +code_emb_source("ej-03")
+    hr
+    +codepen_flex_all("BaybRKr",1)
+    +codepen_flex_all("vYEPxPX",1)
+    hr
+    hr
+    +code_emb_html("ej-01")
+    +code_emb_css("ej-01")
+    +code_emb_js("ej-01")
+    br
+    +code_html("02", "HTML", "CSS", "JS")
+    .tabcontent#HTML-02
+        +code_emb_html("ej-02")
+    .tabcontent#CSS-02
+        +code_emb_css("ej-02")
+    .tabcontent#JS-02
+        +code_emb_js("ej-02")
+    +img_e("e1-1.png")
+    :markdown-it
+        ![](../static/e1-1.png)
+    //- pre: code.txt-diagram: include ../static/txt-diagrams/diag1.txt
     +code_html("01", "HTML", "CSS", "JS")
     .tabcontent#HTML-01: :markdown-it(html)
             ```html
@@ -88,14 +115,13 @@ block pug_contenido
                 ```
     hr
     hr
-    +code_html("02", "HTML", "CSS", "JS")
-    .tabcontent#HTML-02: pre: code.hljs: :highlight(lang="html")
+    +code_html("03", "HTML", "CSS", "JS")
+    .tabcontent#HTML-03: pre: code.hljs: :highlight(lang="html")
         <p>Hello world - 3</p>
-    .tabcontent#CSS-02
-        pre: code.hljs: include:highlight(lang="scss") ../ejemplos/ej-02/styles.scss
-    .tabcontent#JS-02
-        pre: code.hljs: include:highlight(lang="typescript") ../ejemplos/ej-02/script.ts
-
+    .tabcontent#CSS-03
+        pre: code.hljs: include:highlight(lang="scss") ../ejemplos/ej-03/styles.scss
+    .tabcontent#JS-03
+        pre: code.hljs: include:highlight(lang="typescript") ../ejemplos/ej-03/script.ts
 ' > templates/ejercicios.pug
 
 echo 'doctype
@@ -508,6 +534,7 @@ html
 echo 'include /modules/pug/functions/functions
 include /modules/pug/mixins/mixins
 block pug_javascript
+- let code_count = 0
 doctype
 html
     head
@@ -516,6 +543,20 @@ html
         block pug_styles
         link(rel="stylesheet" href="../prism/prism.css")
         link(rel="icon" href="../favicon.ico")
+        script(src="../static/hl.js")
+        script.
+            const getSourceCode = async(name, _file) => {
+                const response = await fetch(`../ejemplos/${name}/${_file}`);
+                const _html    = await response.text();
+                return _html
+            }
+            const replace_all_codes = async (e, _file) => {
+                let _name = e.innerText;
+                let _html = await getSourceCode(_name, _file);
+                let code = hljs.highlightAuto(_html).value;
+                e.innerHTML = code
+            }
+            let all_codes;
     body
         .contenido
             h1#titulo=`${titulo}`
@@ -715,6 +756,50 @@ mixin codepen_flex_all(url,text="",format="html",height_window=450,user=codepen_
             )
             label(for=`${url}A-h`) Horizontal
 
+mixin code_emb_html(name,padding="300px")
+    pre(id=`${name}-html`)
+        code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-html`).hljs.code-emb=`${name}`
+    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
+    script all_codes = document.querySelectorAll("#!{name}-html .language-html")
+    script.
+        for(let _i=0; _i<all_codes.length; _i++){
+            replace_all_codes(all_codes[_i], "index.html")
+        }
+
+mixin code_emb_css(name,padding="300px")
+    pre(id=`${name}-css`)
+        code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-css`).hljs.code-emb=`${name}`
+    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
+    script all_codes = document.querySelectorAll("#!{name}-css .language-css")
+    script.
+        for(let _i=0; _i<all_codes.length; _i++){
+            replace_all_codes(all_codes[_i], "styles.css")
+        }
+
+mixin code_emb_js(name,padding="300px")
+    pre(id=`${name}-javascript`)
+        code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-javascript`).hljs.code-emb=`${name}`
+    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
+    script all_codes = document.querySelectorAll("#!{name}-javascript .language-javascript")
+    script.
+        for(let _i=0; _i<all_codes.length; _i++){
+            replace_all_codes(all_codes[_i], "script.js")
+        }
+
+mixin code_emb_source(name, padding="300px", padding_code="400px")
+    - code_count += 1
+    .ejercicio
+        a(href=`../ejemplos/${name}/index.html` target="_blank").ejercicio-html=`Ejercicio - ${name.slice(3)}`
+    .embed-container(style=`padding-bottom: ${padding};`).html-resize
+        iframe.html-resize(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen)
+    .tab-content
+        +tab_info(code_count, "HTML-S", "CSS-S", "JS-S")
+        .tabcontent(id=`HTML-S-${code_count}`)
+            +code_emb_html(name, padding=padding_code)
+        .tabcontent(id=`CSS-S-${code_count}`)
+            +code_emb_css(name, padding=padding_code)
+        .tabcontent(id=`JS-S-${code_count}`)
+            +code_emb_js(name, padding=padding_code)
 
 
 ' > modules/pug/mixins/mixins.pug
@@ -790,6 +875,9 @@ echo '-
 
 #----------------
 make next-e
+make next-e
+make next-e
+make next-h
 make next-h
 make next-h
 make init

@@ -52,3 +52,4 @@ function openTAB(evt: Event, cityName: string) {
     // evt.target.classList.toggle("active");
     (evt.target as HTMLElement).classList.toggle("active");
   }
+
