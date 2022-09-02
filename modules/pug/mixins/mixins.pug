@@ -176,25 +176,35 @@ mixin codepen_flex_all(url,text="",format="html",height_window=450,user=codepen_
             )
             label(for=`${url}A-h`) Horizontal
 
-mixin code_emb(name,padding="300px")
-    pre
-        code.html-resize.embed-container(style=`padding-bottom: ${padding};`).hljs.code-emb.language-html=`${name}`
+mixin code_emb_html(name,padding="300px")
+    - let _script = `all_codes = document.querySelectorAll('#${name}-html .language-html')`
+    pre(id=`${name}-html`)
+        code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-html`).hljs.code-emb=`${name}`
     //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
+    script=_script
     script.
-        const all_codes = document.querySelectorAll(".code-emb")
-        const getSourceCode = async(name) => {
-            const response = await fetch(`../ejemplos/${name}/index.html`)
-            const _html    = await response.text()
-            return _html
-        }
-        const replace_all_codes = async (e) => {
-            let _name = e.innerText
-            let _html = await getSourceCode(_name)
-            let code = hljs.highlightAuto(_html).value
-            e.innerHTML = code
-        }
-        
-        // all_codes.forEach(replace_all_codes)
         for(let _i=0; _i<all_codes.length; _i++){
-            replace_all_codes(all_codes[_i])
+            replace_all_codes(all_codes[_i], "index.html")
+        }
+
+mixin code_emb_css(name,padding="300px")
+    - let _script = `all_codes = document.querySelectorAll('#${name}-css .language-css')`
+    pre(id=`${name}-css`)
+        code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-css`).hljs.code-emb=`${name}`
+    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
+    script=_script
+    script.
+        for(let _i=0; _i<all_codes.length; _i++){
+            replace_all_codes(all_codes[_i], "styles.css")
+        }
+
+mixin code_emb_js(name,padding="300px")
+    - let _script = `all_codes = document.querySelectorAll('#${name}-javascript .language-javascript')`
+    pre(id=`${name}-javascript`)
+        code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-javascript`).hljs.code-emb=`${name}`
+    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
+    script=_script
+    script.
+        for(let _i=0; _i<all_codes.length; _i++){
+            replace_all_codes(all_codes[_i], "script.js")
         }

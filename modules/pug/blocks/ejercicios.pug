@@ -10,6 +10,19 @@ html
         link(rel="stylesheet" href="../prism/prism.css")
         link(rel="icon" href="../favicon.ico")
         script(src="../static/hl.js")
+        script.
+            const getSourceCode = async(name, _file) => {
+                const response = await fetch(`../ejemplos/${name}/${_file}`);
+                const _html    = await response.text();
+                return _html
+            }
+            const replace_all_codes = async (e, _file) => {
+                let _name = e.innerText;
+                let _html = await getSourceCode(_name, _file);
+                let code = hljs.highlightAuto(_html).value;
+                e.innerHTML = code
+            }
+            let all_codes;
     body
         .contenido
             h1#titulo=`${titulo}`

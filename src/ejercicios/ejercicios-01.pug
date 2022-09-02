@@ -13,7 +13,9 @@ block pug_styles
 block html_javascript
     +new_script(`../scripts.js`)
 block pug_contenido
-    +code_emb("ej-01")
+    +code_emb_html("ej-01")
+    +code_emb_css("ej-01")
+    +code_emb_js("ej-01")
     +img_e("e1-1.png")
     :markdown-it
         ![](../static/e1-1.png)

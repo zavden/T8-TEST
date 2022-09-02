@@ -11,30 +11,47 @@
     <link rel="stylesheet" href="../prism/prism.css">
     <link rel="icon" href="../favicon.ico">
     <script src="../static/hl.js"></script>
+    <script>
+      const getSourceCode = async(name, _file) => {
+          const response = await fetch(`../ejemplos/${name}/${_file}`);
+          const _html    = await response.text();
+          return _html
+      }
+      const replace_all_codes = async (e, _file) => {
+          let _name = e.innerText;
+          let _html = await getSourceCode(_name, _file);
+          let code = hljs.highlightAuto(_html).value;
+          e.innerHTML = code
+      }
+      let all_codes;
+    </script>
   </head>
   <body>
     <div class="contenido">
       <h1 id="titulo">Ejemplo 1</h1>
       <div class="menu-nav"><a href="../index.html">Index</a><a class="remark-ej" href="ejercicios-01.html">Ej-01</a>
       </div><code class="header" style="text-align:center; display:block"><a href="#downer"></a></code>
-      <pre><code class="html-resize embed-container hljs code-emb language-html" style="padding-bottom: 300px;">ej-01</code></pre>
+      <pre id="ej-01-html"><code class="html-resize embed-container language-html hljs code-emb" style="padding-bottom: 300px;">ej-01</code></pre>
+      <script>all_codes = document.querySelectorAll('#ej-01-html .language-html')</script>
       <script>
-        const all_codes = document.querySelectorAll(".code-emb")
-        const getSourceCode = async(name) => {
-            const response = await fetch(`../ejemplos/${name}/index.html`)
-            const _html    = await response.text()
-            return _html
-        }
-        const replace_all_codes = async (e) => {
-            let _name = e.innerText
-            let _html = await getSourceCode(_name)
-            let code = hljs.highlightAuto(_html).value
-            e.innerHTML = code
+        for(let _i=0; _i<all_codes.length; _i++){
+            replace_all_codes(all_codes[_i], "index.html")
         }
         
-        // all_codes.forEach(replace_all_codes)
+      </script>
+      <pre id="ej-01-css"><code class="html-resize embed-container language-css hljs code-emb" style="padding-bottom: 300px;">ej-01</code></pre>
+      <script>all_codes = document.querySelectorAll('#ej-01-css .language-css')</script>
+      <script>
         for(let _i=0; _i<all_codes.length; _i++){
-            replace_all_codes(all_codes[_i])
+            replace_all_codes(all_codes[_i], "styles.css")
+        }
+        
+      </script>
+      <pre id="ej-01-javascript"><code class="html-resize embed-container language-javascript hljs code-emb" style="padding-bottom: 300px;">ej-01</code></pre>
+      <script>all_codes = document.querySelectorAll('#ej-01-javascript .language-javascript')</script>
+      <script>
+        for(let _i=0; _i<all_codes.length; _i++){
+            replace_all_codes(all_codes[_i], "script.js")
         }
       </script><img src="../static/e1-1.png" style="width: 100%"/><p><img src="../static/e1-1.png" alt=""></p>
 
