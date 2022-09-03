@@ -1,5 +1,5 @@
 "use strict";
-(function () {
+document.addEventListener("DOMContentLoaded", (event) => {
     const titulo = document.getElementById("titulo");
     titulo.style.color = "red";
     titulo.addEventListener("click", () => alert("Hiciste click en el título"));
@@ -25,9 +25,18 @@
     };
     all_codepen_flex.forEach((code_flex) => {
         const idCodeFlex = code_flex.id;
-        console.log(`${idCodeFlex}-v`);
         const checkBoxVertical = document.getElementById(`${idCodeFlex}-v`);
         const checkBoxHorizontal = document.getElementById(`${idCodeFlex}-h`);
+        const widthPrinter = document.getElementById(`${idCodeFlex}-width`);
+        const heightPrinter = document.getElementById(`${idCodeFlex}-height`);
+        const resizeFrame = document.getElementById(`${idCodeFlex}-iframe`);
+        const iframeContainer = document.getElementById(`${idCodeFlex}-iframe-container`);
+        if (resizeFrame !== null) {
+            iframeContainer.addEventListener("mousemove", (e) => {
+                widthPrinter.innerText = `${resizeFrame.clientWidth}`;
+                heightPrinter.innerText = `${resizeFrame.clientHeight}`;
+            });
+        }
         checkBoxVertical.addEventListener("click", e => {
             const _val = changeVal(e.target, 1) + changeVal(checkBoxHorizontal, 2);
             changeState(_val, code_flex);
@@ -37,7 +46,20 @@
             changeState(_val, code_flex);
         });
     });
-})();
+    const all_iframes_container = document.querySelectorAll(".iframe-container");
+    all_iframes_container.forEach(e => {
+        const frameId = e.id.slice(0, "ej-00".length);
+        const widthPrinter = document.getElementById(`${frameId}-width`);
+        const heightPrinter = document.getElementById(`${frameId}-height`);
+        const resizeFrame = document.getElementById(`${frameId}-iframe`);
+        if (resizeFrame !== null) {
+            e.addEventListener("mousemove", (e) => {
+                widthPrinter.innerText = `${resizeFrame.clientWidth}`;
+                heightPrinter.innerText = `${resizeFrame.clientHeight}`;
+            });
+        }
+    });
+});
 function openTAB(evt, cityName) {
     // Declare all variables
     var i, tablinks;

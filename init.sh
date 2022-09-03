@@ -43,13 +43,11 @@ block pug_styles
 block html_javascript
     +new_script(`../scripts.js`)
 block pug_contenido
-    +code_emb_source("ej-01")
-    +code_emb_source("ej-02")
-    +code_emb_source("ej-03")
+    +codepen_flex_all("BaybRKr")
+    +codepen_flex_all("vYEPxPX")
     hr
-    +code_emb_source("ej-01")
-    +code_emb_source("ej-02")
-    +code_emb_source("ej-03")
+    +code_emb_source_u("ej-01")
+    +code_emb_source_u("ej-02")
     hr
     +codepen_flex_all("BaybRKr",1)
     +codepen_flex_all("vYEPxPX",1)
@@ -122,6 +120,8 @@ block pug_contenido
         pre: code.hljs: include:highlight(lang="scss") ../ejemplos/ej-03/styles.scss
     .tabcontent#JS-03
         pre: code.hljs: include:highlight(lang="typescript") ../ejemplos/ej-03/script.ts
+
+
 ' > templates/ejercicios.pug
 
 echo 'doctype
@@ -445,7 +445,7 @@ block pug_contenido
 ' > src/index.pug
 
 # docs
-echo '(function(){
+echo 'document.addEventListener("DOMContentLoaded", (event) => {
     const titulo = document.getElementById("titulo")
     titulo.style.color = "red"
     titulo.addEventListener("click",()=>alert("Hiciste click en el título"))
@@ -463,9 +463,20 @@ echo '(function(){
     }
     all_codepen_flex.forEach( (code_flex) => {
       const idCodeFlex = code_flex.id
-      console.log(`${idCodeFlex}-v`)
       const checkBoxVertical   = document.getElementById(`${idCodeFlex}-v`) as HTMLInputElement
       const checkBoxHorizontal = document.getElementById(`${idCodeFlex}-h`) as HTMLInputElement
+      const widthPrinter       = document.getElementById(`${idCodeFlex}-width`) as HTMLElement
+      const heightPrinter      = document.getElementById(`${idCodeFlex}-height`) as HTMLElement
+      const resizeFrame        = document.getElementById(`${idCodeFlex}-iframe`) as HTMLIFrameElement
+      const iframeContainer    = document.getElementById(`${idCodeFlex}-iframe-container`)
+
+      if(resizeFrame !== null){
+        iframeContainer.addEventListener("mousemove", (e) => {
+          widthPrinter.innerText  = `${resizeFrame.clientWidth}`
+          heightPrinter.innerText = `${resizeFrame.clientHeight}`
+        })
+      }
+
 
       checkBoxVertical.addEventListener("click", e => {
         const _val = changeVal(e.target as HTMLInputElement, 1) + changeVal(checkBoxHorizontal, 2)
@@ -476,7 +487,23 @@ echo '(function(){
         changeState(_val, code_flex as HTMLInputElement)
       })
     })
-})()
+
+    const all_iframes_container = document.querySelectorAll(".iframe-container")
+
+    all_iframes_container.forEach(e => {
+      const frameId       = e.id.slice(0,"ej-00".length)
+      const widthPrinter  = document.getElementById(`${frameId}-width`)
+      const heightPrinter = document.getElementById(`${frameId}-height`)
+      const resizeFrame   = document.getElementById(`${frameId}-iframe`)
+
+      if(resizeFrame !== null){
+        e.addEventListener("mousemove", (e) => {
+          widthPrinter.innerText  = `${resizeFrame.clientWidth}`
+          heightPrinter.innerText = `${resizeFrame.clientHeight}`
+        })
+      }
+    })
+})
 
 function openTAB(evt: Event, cityName: string) {
     // Declare all variables
@@ -499,6 +526,8 @@ function openTAB(evt: Event, cityName: string) {
     // evt.target.classList.toggle("active");
     (evt.target as HTMLElement).classList.toggle("active");
   }
+
+
 ' > src/scripts.ts
 
 # modules
@@ -535,6 +564,7 @@ echo 'include /modules/pug/functions/functions
 include /modules/pug/mixins/mixins
 block pug_javascript
 - let code_count = 0
+- let codepen_count = 0
 doctype
 html
     head
@@ -590,6 +620,11 @@ mixin codepen(index,height_window=310,user=codepen_user)
       data-theme-id="default" data-default-tab="css,result" 
       data-user=user data-slug-hash=`${url}` 
       style=`height: ${height_window}px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;`)
+
+
+mixin codepen_iframe(url, height=400, user=codepen_user)
+    iframe(height=`${height}` style="width: 100%;" scrolling="no" src=`https://codepen.io/${user}/embed/${url}?default-tab=html%2Cresult` frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true") See the Pen
+
 mixin codepen_url(url,text="",height_window=310,user=codepen_user,editable="true")
     .ejercicio
         a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${text}`
@@ -692,11 +727,11 @@ mixin codepen_flex_live(url,text="",format="result",height_window=450,user=codep
     .ejercicio
         a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${text} - live`
     .embed-container.ejercicio-flex(style=`padding-bottom: ${height_window}px;` id=url).html-resize
-        p(class="codepen" data-height=`${height_window}` 
-        data-theme-id="default" data-default-tab=format
-        data-user=user data-slug-hash=`${url}`
-        data-editable="true"
-        style=`height: ${height_window}px; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;`)
+        iframe(
+            height=`${height}` style="width: 100%;" scrolling="no" title="CSS-A-2"
+            src=`https://codepen.io/${user}/embed/${url}?default-tab=html%2Cresult`
+            frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"
+        ) See the Pen
     .change-vh-container
         form
             input(
@@ -717,17 +752,23 @@ mixin code_html(num, ...blks)
     .tab-content
         +tab_info(num, ...blks)
 
-mixin codepen_flex_all(url,text="",format="html",height_window=450,user=codepen_user)
+mixin codepen_flex_all(url,format="html",height_window=450,user=codepen_user)
+    - codepen_count += 1
     .ejercicio
-        a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${text}`
-    .super-embed-container
+        a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${zeroPad(codepen_count,2)}`
+    .super-embed-container(id=`${url}-iframe-container`)
         .embed-container.ejercicio-flex(style=`padding-bottom: ${height_window}px;` id=url).html-resize
-            p(class="codepen" data-height=`${height_window}` 
-            data-theme-id="default" data-default-tab="result" 
-            data-user=user data-slug-hash=`${url}`
-            style=`height: ${height_window}px; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;`)
+            iframe(
+            height=`${height}` style="width: 100%;" scrolling="no" id=`${url}-iframe`
+            src=`https://codepen.io/${user}/embed/${url}?default-tab=html%2Cresult`
+            frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"
+        ) See the Pen
         .change-vh-container
             form
+                p(style="display: inline-block") Width = 
+                    span(id=`${url}-width`).width-printer 0
+                p(style="display: inline-block") Height = 
+                    span(id=`${url}-height`).width-printer 0
                 input(
                     type="checkbox" id=`${url}-v` name=`${url}-v`
                     value="vertical"
@@ -759,7 +800,6 @@ mixin codepen_flex_all(url,text="",format="html",height_window=450,user=codepen_
 mixin code_emb_html(name,padding="300px")
     pre(id=`${name}-html`)
         code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-html`).hljs.code-emb=`${name}`
-    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
     script all_codes = document.querySelectorAll("#!{name}-html .language-html")
     script.
         for(let _i=0; _i<all_codes.length; _i++){
@@ -769,7 +809,6 @@ mixin code_emb_html(name,padding="300px")
 mixin code_emb_css(name,padding="300px")
     pre(id=`${name}-css`)
         code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-css`).hljs.code-emb=`${name}`
-    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
     script all_codes = document.querySelectorAll("#!{name}-css .language-css")
     script.
         for(let _i=0; _i<all_codes.length; _i++){
@@ -779,7 +818,6 @@ mixin code_emb_css(name,padding="300px")
 mixin code_emb_js(name,padding="300px")
     pre(id=`${name}-javascript`)
         code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-javascript`).hljs.code-emb=`${name}`
-    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
     script all_codes = document.querySelectorAll("#!{name}-javascript .language-javascript")
     script.
         for(let _i=0; _i<all_codes.length; _i++){
@@ -791,7 +829,7 @@ mixin code_emb_source(name, padding="300px", padding_code="400px")
     .ejercicio
         a(href=`../ejemplos/${name}/index.html` target="_blank").ejercicio-html=`Ejercicio - ${name.slice(3)}`
     .embed-container(style=`padding-bottom: ${padding};`).html-resize
-        iframe.html-resize(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen)
+        iframe(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen)
     .tab-content
         +tab_info(code_count, "HTML-S", "CSS-S", "JS-S")
         .tabcontent(id=`HTML-S-${code_count}`)
@@ -800,6 +838,29 @@ mixin code_emb_source(name, padding="300px", padding_code="400px")
             +code_emb_css(name, padding=padding_code)
         .tabcontent(id=`JS-S-${code_count}`)
             +code_emb_js(name, padding=padding_code)
+
+
+mixin code_emb_source_u(name, padding="300px", padding_code="400px")
+    - code_count += 1
+    .ejercicio
+        a(href=`../ejemplos/${name}/index.html` target="_blank").ejercicio-html=`Ejercicio iframe - ${name.slice(3)}`
+    .iframe-container(id=`${name}-iframe-container`)
+        .numbers-container(style="margin-bottom: -20px")
+            p(style="display: inline-block") Width = 
+                span(id=`${name}-width`).width-printer 0
+            p(style="display: inline-block") ; Height = 
+                span(id=`${name}-height`).width-printer 0
+        .embed-container(style=`padding-bottom: ${padding};`).html-resize
+            iframe(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen id=`${name}-iframe`)
+        .tab-content
+            +tab_info(code_count, "HTML-S", "CSS-S", "JS-S")
+            .tabcontent(id=`HTML-S-${code_count}`)
+                +code_emb_html(name, padding=padding_code)
+            .tabcontent(id=`CSS-S-${code_count}`)
+                +code_emb_css(name, padding=padding_code)
+            .tabcontent(id=`JS-S-${code_count}`)
+                +code_emb_js(name, padding=padding_code)
+
 
 
 ' > modules/pug/mixins/mixins.pug

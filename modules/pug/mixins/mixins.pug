@@ -10,6 +10,11 @@ mixin codepen(index,height_window=310,user=codepen_user)
       data-theme-id="default" data-default-tab="css,result" 
       data-user=user data-slug-hash=`${url}` 
       style=`height: ${height_window}px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;`)
+
+
+mixin codepen_iframe(url, height=400, user=codepen_user)
+    iframe(height=`${height}` style="width: 100%;" scrolling="no" src=`https://codepen.io/${user}/embed/${url}?default-tab=html%2Cresult` frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true") See the Pen
+
 mixin codepen_url(url,text="",height_window=310,user=codepen_user,editable="true")
     .ejercicio
         a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${text}`
@@ -112,11 +117,11 @@ mixin codepen_flex_live(url,text="",format="result",height_window=450,user=codep
     .ejercicio
         a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${text} - live`
     .embed-container.ejercicio-flex(style=`padding-bottom: ${height_window}px;` id=url).html-resize
-        p(class="codepen" data-height=`${height_window}` 
-        data-theme-id="default" data-default-tab=format
-        data-user=user data-slug-hash=`${url}`
-        data-editable="true"
-        style=`height: ${height_window}px; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;`)
+        iframe(
+            height=`${height}` style="width: 100%;" scrolling="no" title="CSS-A-2"
+            src=`https://codepen.io/${user}/embed/${url}?default-tab=html%2Cresult`
+            frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"
+        ) See the Pen
     .change-vh-container
         form
             input(
@@ -137,17 +142,23 @@ mixin code_html(num, ...blks)
     .tab-content
         +tab_info(num, ...blks)
 
-mixin codepen_flex_all(url,text="",format="html",height_window=450,user=codepen_user)
+mixin codepen_flex_all(url,format="html",height_window=450,user=codepen_user)
+    - codepen_count += 1
     .ejercicio
-        a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${text}`
-    .super-embed-container
+        a(href=`https://codepen.io/${user}/pen/${url}`)=`Ejercicio ${zeroPad(codepen_count,2)}`
+    .super-embed-container(id=`${url}-iframe-container`)
         .embed-container.ejercicio-flex(style=`padding-bottom: ${height_window}px;` id=url).html-resize
-            p(class="codepen" data-height=`${height_window}` 
-            data-theme-id="default" data-default-tab="result" 
-            data-user=user data-slug-hash=`${url}`
-            style=`height: ${height_window}px; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;`)
+            iframe(
+            height=`${height}` style="width: 100%;" scrolling="no" id=`${url}-iframe`
+            src=`https://codepen.io/${user}/embed/${url}?default-tab=html%2Cresult`
+            frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"
+        ) See the Pen
         .change-vh-container
             form
+                p(style="display: inline-block") Width = 
+                    span(id=`${url}-width`).width-printer 0
+                p(style="display: inline-block") Height = 
+                    span(id=`${url}-height`).width-printer 0
                 input(
                     type="checkbox" id=`${url}-v` name=`${url}-v`
                     value="vertical"
@@ -179,7 +190,6 @@ mixin codepen_flex_all(url,text="",format="html",height_window=450,user=codepen_
 mixin code_emb_html(name,padding="300px")
     pre(id=`${name}-html`)
         code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-html`).hljs.code-emb=`${name}`
-    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
     script all_codes = document.querySelectorAll("#!{name}-html .language-html")
     script.
         for(let _i=0; _i<all_codes.length; _i++){
@@ -189,7 +199,6 @@ mixin code_emb_html(name,padding="300px")
 mixin code_emb_css(name,padding="300px")
     pre(id=`${name}-css`)
         code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-css`).hljs.code-emb=`${name}`
-    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
     script all_codes = document.querySelectorAll("#!{name}-css .language-css")
     script.
         for(let _i=0; _i<all_codes.length; _i++){
@@ -199,7 +208,6 @@ mixin code_emb_css(name,padding="300px")
 mixin code_emb_js(name,padding="300px")
     pre(id=`${name}-javascript`)
         code.html-resize.embed-container(style=`padding-bottom: ${padding};` class=`language-javascript`).hljs.code-emb=`${name}`
-    //- script(src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/go.min.js") 
     script all_codes = document.querySelectorAll("#!{name}-javascript .language-javascript")
     script.
         for(let _i=0; _i<all_codes.length; _i++){
@@ -211,7 +219,7 @@ mixin code_emb_source(name, padding="300px", padding_code="400px")
     .ejercicio
         a(href=`../ejemplos/${name}/index.html` target="_blank").ejercicio-html=`Ejercicio - ${name.slice(3)}`
     .embed-container(style=`padding-bottom: ${padding};`).html-resize
-        iframe.html-resize(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen)
+        iframe(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen)
     .tab-content
         +tab_info(code_count, "HTML-S", "CSS-S", "JS-S")
         .tabcontent(id=`HTML-S-${code_count}`)
@@ -220,6 +228,29 @@ mixin code_emb_source(name, padding="300px", padding_code="400px")
             +code_emb_css(name, padding=padding_code)
         .tabcontent(id=`JS-S-${code_count}`)
             +code_emb_js(name, padding=padding_code)
+
+
+mixin code_emb_source_u(name, padding="300px", padding_code="400px")
+    - code_count += 1
+    .ejercicio
+        a(href=`../ejemplos/${name}/index.html` target="_blank").ejercicio-html=`Ejercicio iframe - ${name.slice(3)}`
+    .iframe-container(id=`${name}-iframe-container`)
+        .numbers-container(style="margin-bottom: -20px")
+            p(style="display: inline-block") Width = 
+                span(id=`${name}-width`).width-printer 0
+            p(style="display: inline-block") ; Height = 
+                span(id=`${name}-height`).width-printer 0
+        .embed-container(style=`padding-bottom: ${padding};`).html-resize
+            iframe(src=`../ejemplos/${name}/` frameborder="0" allowfullscreen id=`${name}-iframe`)
+        .tab-content
+            +tab_info(code_count, "HTML-S", "CSS-S", "JS-S")
+            .tabcontent(id=`HTML-S-${code_count}`)
+                +code_emb_html(name, padding=padding_code)
+            .tabcontent(id=`CSS-S-${code_count}`)
+                +code_emb_css(name, padding=padding_code)
+            .tabcontent(id=`JS-S-${code_count}`)
+                +code_emb_js(name, padding=padding_code)
+
 
 
 
